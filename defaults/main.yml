@@ -1,0 +1,21 @@
+---
+
+users_default_sudo: True
+
+users_allowed_groups: {}
+# EXAMPLE
+  # admins: {}
+  # support:
+  #   sudo: False
+
+users_users_dict: {}
+# EXAMPLE
+  # admins:
+  #   - admin1
+  # support:
+  #   - support1
+
+users_ssh_keys: {}
+# EXAMPLE
+  # admin1: ssh-rsa AAAA
+  # support1: ssh-rsa AAAA

@@ -1,0 +1,23 @@
+---
+
+- name: Create sudo passwordless group
+  group:
+    name: adm-sudo-nopasswd
+
+- name: Configure access.conf
+  template:
+    dest: /etc/security/access.conf
+    src: access.conf.j2
+
+# Если этот шаг падает с непонятной ошибкой, то проблема на этапе валидации конфига через visudo.
+- name: Configure sudoers include
+  copy:
+    dest: /etc/sudoers.d/users
+    content: "%adm-sudo-nopasswd ALL=(ALL:ALL) NOPASSWD:ALL\n"
+    validate: /sbin/visudo -cf %s
+
+- name: Configure each user
+  include_tasks: users.yml
+  loop_control:
+    loop_var: users_group
+  loop: "{{ users_allowed_groups | dict2items }}"

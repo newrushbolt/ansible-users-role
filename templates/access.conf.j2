@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+{% for allowed_group in users_allowed_groups %}
+{% for user in users_users_dict[allowed_group] %}
++ : {{ user }} : ALL
+{% endfor %}
+{% endfor %}
++ : root : ALL
+- : ALL : ALL

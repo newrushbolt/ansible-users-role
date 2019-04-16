@@ -1,0 +1,35 @@
+---
+
+- name: "Create users common groups"
+  group:
+    name: "{{ item }}"
+  loop: "{{ users_users_dict[users_group.key] }}"
+
+- name: "Create users"
+  user:
+    name: "{{ item }}"
+    group: "{{ item }}"
+    groups: "{{
+      (
+        users_group.value['sudo'] | default(users_default_sudo)
+      ) |
+      ternary(['adm-sudo-nopasswd'], [])
+    }}"
+    append: false
+  loop: "{{ users_users_dict[users_group.key] }}"
+
+- name: "Create ssh dirs for users"
+  file:
+    dest: "/home/{{ item }}/.ssh"
+    state: directory
+    mode: 0700
+    owner: "{{ item }}"
+  loop: "{{ users_users_dict[users_group.key] }}"
+
+- name: "Put users ssh keys"
+  copy:
+    dest: "/home/{{ item }}/.ssh/authorized_keys"
+    content: "{{ users_ssh_keys[item] }}\n"
+    owner: "{{ item }}"
+    mode: 0600
+  loop: "{{ users_users_dict[users_group.key] }}"
