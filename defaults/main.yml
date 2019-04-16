@@ -1,6 +1,7 @@
 ---
 
 users_default_sudo: True
+users_configure_access_conf: False
 
 users_allowed_groups: {}
 # EXAMPLE

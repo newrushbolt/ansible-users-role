@@ -8,8 +8,8 @@
   template:
     dest: /etc/security/access.conf
     src: access.conf.j2
+  when: "users_configure_access_conf"
 
-# Если этот шаг падает с непонятной ошибкой, то проблема на этапе валидации конфига через visudo.
 - name: Configure sudoers include
   copy:
     dest: /etc/sudoers.d/users
